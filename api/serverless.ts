@@ -42,7 +42,7 @@ sls.functions = {
     handler: "src/handler.default",
     events: [
       {
-        http: { method: "get", path: "/login", cors: true },
+        http: { method: "post", path: "/login", cors: true },
       },
       {
         http: { method: "post", path: "/login/seed", cors: true },

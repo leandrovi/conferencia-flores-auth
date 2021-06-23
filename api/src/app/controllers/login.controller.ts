@@ -6,7 +6,6 @@ import attendees from "../../../attendees.json";
 AWS.config.update({ region: "us-east-1" });
 
 interface IAttendee {
-  id: string;
   name: string;
   email: string;
   password: string;
@@ -14,8 +13,27 @@ interface IAttendee {
 
 export class LoginController {
   async login(request: Request, response: Response) {
-    console.info("Login");
-    return response.status(200).json({ ok: true });
+    const { email, password }: Omit<IAttendee, "name"> = request.body;
+
+    console.info("🚀 Starting login for attendee:", email);
+
+    const { Item: attendeeExists } = await new AWS.DynamoDB.DocumentClient()
+      .get({
+        TableName: process.env.ATTENDEES_TABLE,
+        Key: { email, password },
+      })
+      .promise();
+
+    if (!attendeeExists) {
+      return response.status(404).json({ error: "Attendee not found" });
+    }
+
+    const attendee = attendeeExists as IAttendee;
+
+    console.info("✅ Attendee successfully retrieved:", attendee);
+    console.info(`🚀 Generating access token for attendee ${attendee.name}`);
+
+    return response.status(200).json({ exists: true });
   }
 
   async seed(request: Request, response: Response) {
