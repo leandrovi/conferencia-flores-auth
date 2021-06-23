@@ -44,6 +44,9 @@ sls.functions = {
       {
         http: { method: "get", path: "/login", cors: true },
       },
+      {
+        http: { method: "post", path: "/login/seed", cors: true },
+      },
     ],
   },
 };

@@ -4,15 +4,13 @@ import cors from "cors";
 import { LoginController } from "./app/controllers/login.controller";
 
 const app = express();
+const loginController = new LoginController();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const loginController = new LoginController();
-
-// Routes and methods
 app.get("/login", loginController.login);
+app.post("/login/seed", loginController.seed);
 
-// Export the application to be passed into the serverless framework
 export default app;

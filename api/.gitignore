@@ -34,3 +34,6 @@ node_modules/
 
 # Serverless directories
 .serverless/
+
+# Database seed
+attendees.json

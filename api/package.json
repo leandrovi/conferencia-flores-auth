@@ -18,6 +18,7 @@
     "metrics": "sls metrics"
   },
   "dependencies": {
+    "aws-sdk": "^2.932.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "serverless-http": "^2.6.0",
