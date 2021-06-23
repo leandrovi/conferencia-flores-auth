@@ -1,13 +1,16 @@
-import React, { useRef, useState } from "react";
-import { SubmitHandler, FormHandles } from "@unform/core";
+import React, { useRef, useState, useEffect, FormEvent } from "react";
+import { SubmitHandler, FormHandles, FormHelpers } from "@unform/core";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { Input } from "../../components/Input";
+import { AppLoader } from "../../components/Loader";
 
 import leftBg from "../../assets/left-bg.png";
 import rightBg from "../../assets/right-bg.png";
 import welcome from "../../assets/welcome.png";
+import spinner from "../../assets/spinner.gif";
 
 import styles from "./styles.module.css";
 
@@ -18,10 +21,26 @@ interface FormData {
 
 export function Login() {
   const formRef = useRef<FormHandles>(null);
+
   const [authError, setAuthError] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-  async function handleSubmit(data: SubmitHandler<FormData>) {
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  async function handleSubmit(
+    data: SubmitHandler<FormData>,
+    _: FormHelpers,
+    event?: FormEvent<Element> | undefined
+  ) {
+    event?.preventDefault();
+    setSubmitLoading(true);
+
     try {
       const schema = Yup.object().shape({
         email: Yup.string()
@@ -37,6 +56,10 @@ export function Login() {
       });
 
       console.log(data);
+
+      setTimeout(() => {
+        setSubmitLoading(false);
+      }, 1000);
       // window.location.href = "https://adai.online.church/";
     } catch (err) {
       const validationErrors: { [path: string]: string } = {};
@@ -53,55 +76,86 @@ export function Login() {
           setAuthError(true);
         }
       }
+
+      setTimeout(() => {
+        setSubmitLoading(false);
+      }, 1000);
     }
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.leftSide}>
-        <img src={leftBg} alt="Flower" />
-      </div>
+    <AnimatePresence>
+      <motion.div
+        key="loader"
+        animate={loading ? "open" : "closed"}
+        // initial={{ opacity: 0 }}
+        variants={{
+          open: { opacity: 1 },
+          closed: { opacity: 0 },
+        }}
+        exit={{ display: "none" }}
+      >
+        <AppLoader />
+      </motion.div>
 
-      <div className={styles.content}>
-        <img src={welcome} alt="Bem vindas" />
+      <motion.div
+        key="container"
+        animate={loading === false && "show"}
+        initial={{ opacity: 0 }}
+        variants={{
+          show: { opacity: 1 },
+        }}
+        className={styles.container}
+      >
+        <div className={styles.leftSide}>
+          <img src={leftBg} alt="Flower" />
+        </div>
 
-        <Form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
-          <Input
-            name="email"
-            type="text"
-            placeholder="Digite o seu e-mail"
-            clearAuthError={() => setAuthError(false)}
-          />
+        <div className={styles.content}>
+          <img src={welcome} alt="Bem vindas" />
 
-          <Input
-            name="password"
-            type="password"
-            placeholder="Digite a sua senha"
-            clearAuthError={() => setAuthError(false)}
-          />
+          <Form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
+            <Input
+              name="email"
+              type="text"
+              placeholder="Digite o seu e-mail"
+              clearAuthError={() => setAuthError(false)}
+            />
 
-          {authError && (
-            <span className={styles.error}>
-              Seu e-mail e/ou senha estão incorretos, tente novamente
-            </span>
-          )}
+            <Input
+              name="password"
+              type="password"
+              placeholder="Digite a sua senha"
+              clearAuthError={() => setAuthError(false)}
+            />
 
-          {errorCount >= 3 && (
-            <span className={styles.error}>
-              Caso você esteja com dificuldades para acessar, envie um e-mail
-              para contato@adai.com.br para que possamos ajudá-la
-            </span>
-          )}
+            {authError && (
+              <span className={styles.error}>
+                Seu e-mail e/ou senha estão incorretos, tente novamente
+              </span>
+            )}
 
-          <button type="submit" className={styles.button}>
-            entrar
-          </button>
-        </Form>
-      </div>
+            {errorCount >= 3 && (
+              <span className={styles.error}>
+                Caso você esteja com dificuldades para acessar, envie um e-mail
+                para contato@adai.com.br para que possamos ajudá-la
+              </span>
+            )}
 
-      <div className={styles.rightSide}>
-        <img src={rightBg} alt="Flower" />
-      </div>
-    </div>
+            <button
+              type="submit"
+              className={styles.button}
+              disabled={submitLoading}
+            >
+              {submitLoading ? <img src={spinner} alt="Spinner" /> : "entrar"}
+            </button>
+          </Form>
+        </div>
+
+        <div className={styles.rightSide}>
+          <img src={rightBg} alt="Flower" />
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

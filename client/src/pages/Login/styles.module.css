@@ -68,6 +68,7 @@
 
 .button {
   width: 150px;
+  height: 40px;
   margin: 20px auto 40px;
   padding: 10px;
   border-radius: 8px;
@@ -77,10 +78,19 @@
   font-size: 0.9rem;
   background-color: var(--yellow-500);
   transition: filter 0.2s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .button:hover {
   filter: brightness(0.95);
+}
+
+.button img {
+  width: 1rem;
+  margin: 0;
 }
 
 .error {
