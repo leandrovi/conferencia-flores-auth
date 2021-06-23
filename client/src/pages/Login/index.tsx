@@ -16,6 +16,7 @@ import styles from "./styles.module.css";
 import { sleep } from "../../utils/sleep";
 import { loadLoggedAttendee } from "../../services/storage";
 import { STREAMING_URL } from "../../contants";
+import { api } from "../../services/api";
 
 interface FormData {
   name: string;
@@ -67,12 +68,12 @@ export function Login() {
         abortEarly: false,
       });
 
-      console.log(data);
+      const response = await api.post<{ exists: boolean }>("/login", data);
 
-      setTimeout(() => {
-        setSubmitLoading(false);
-      }, 1000);
-      // window.location.href = STREAMING_URL;
+      console.log(response.data);
+      window.location.href = STREAMING_URL;
+
+      setSubmitLoading(false);
     } catch (err) {
       const validationErrors: { [path: string]: string } = {};
 
@@ -89,9 +90,7 @@ export function Login() {
         }
       }
 
-      setTimeout(() => {
-        setSubmitLoading(false);
-      }, 1000);
+      setSubmitLoading(false);
     }
   }
 
