@@ -2,6 +2,18 @@
   width: 100%;
 }
 
+.container:nth-child(2) {
+  margin-top: 0.9rem;
+}
+
+.container span {
+  font-size: 0.8rem;
+  letter-spacing: -0.01rem;
+  display: inline-block;
+  margin-top: 0.45rem;
+  color: var(--red-500);
+}
+
 .input {
   width: 100%;
   padding: 12px;
@@ -9,8 +21,11 @@
   border: 1px solid var(--gray-100);
   background: var(--gray-100);
   font-size: 0.9rem;
-  margin-bottom: 12px;
   font-family: "LinoWrite";
+}
+
+.input:focus {
+  border: 1px solid var(--yellow-500);
 }
 
 .input[type="password"]::placeholder {

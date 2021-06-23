@@ -3,7 +3,7 @@ import { useField } from "@unform/core";
 
 import styles from "./styles.module.css";
 
-interface Props {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   type?:
     | "text"
@@ -23,13 +23,20 @@ interface Props {
     | "week";
   label?: string;
   value?: string;
+  clearAuthError: () => void;
 }
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & Props;
-
-export function Input({ name, type, label, value, ...rest }: InputProps) {
+export function Input({
+  name,
+  type,
+  label,
+  value,
+  clearAuthError,
+  ...rest
+}: InputProps) {
   const inputRef = useRef(null);
-  const { fieldName, defaultValue, registerField, error } = useField(name);
+  const { fieldName, defaultValue, registerField, error, clearError } =
+    useField(name);
 
   const defaultInputValue = value || defaultValue;
 
@@ -59,6 +66,10 @@ export function Input({ name, type, label, value, ...rest }: InputProps) {
         ref={inputRef}
         defaultValue={defaultInputValue}
         className={styles.input}
+        onFocus={() => {
+          clearError();
+          clearAuthError();
+        }}
         {...rest}
       />
 

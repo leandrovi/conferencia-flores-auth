@@ -82,3 +82,11 @@
 .button:hover {
   filter: brightness(0.95);
 }
+
+.error {
+  font-size: 0.8rem;
+  letter-spacing: -0.01rem;
+  display: inline-block;
+  margin-top: 0.45rem;
+  color: var(--red-500);
+}
