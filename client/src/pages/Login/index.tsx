@@ -19,8 +19,8 @@ import { STREAMING_URL } from "../../contants";
 import { api } from "../../services/api";
 
 interface FormData {
-  name: string;
   email: string;
+  password: string;
 }
 
 export function Login() {
@@ -70,7 +70,10 @@ export function Login() {
 
       const response = await api.post<{ exists: boolean }>("/login", data);
 
-      console.log(response.data);
+      if (!response.data.exists) {
+        throw new Error("Attendee does not exist");
+      }
+
       window.location.href = STREAMING_URL;
 
       setSubmitLoading(false);
@@ -99,7 +102,6 @@ export function Login() {
       <motion.div
         key="loader"
         animate={loading ? "open" : "closed"}
-        // initial={{ opacity: 0 }}
         variants={{
           open: { opacity: 1 },
           closed: { opacity: 0 },
@@ -137,6 +139,7 @@ export function Login() {
               name="password"
               type="password"
               placeholder="Digite a sua senha"
+              isPassword={true}
               clearAuthError={() => setAuthError(false)}
             />
 

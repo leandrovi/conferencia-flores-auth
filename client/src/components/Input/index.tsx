@@ -1,5 +1,6 @@
-import { useRef, useEffect, InputHTMLAttributes } from "react";
+import { useRef, useEffect, InputHTMLAttributes, useState } from "react";
 import { useField } from "@unform/core";
+import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 
 import styles from "./styles.module.css";
 
@@ -23,6 +24,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     | "week";
   label?: string;
   value?: string;
+  isPassword?: boolean;
   clearAuthError: () => void;
 }
 
@@ -32,12 +34,13 @@ export function Input({
   label,
   value,
   clearAuthError,
+  isPassword,
   ...rest
 }: InputProps) {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const { fieldName, defaultValue, registerField, error, clearError } =
     useField(name);
-
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const defaultInputValue = value || defaultValue;
 
   useEffect(() => {
@@ -56,22 +59,72 @@ export function Input({
     });
   }, [fieldName, registerField]);
 
+  function handlePasswordToggle() {
+    if (inputRef.current?.type === "text") {
+      inputRef.current.type = "password";
+    } else if (inputRef.current?.type === "password") {
+      inputRef.current.type = "text";
+    }
+
+    setPasswordVisible(!passwordVisible);
+  }
+
+  function PasswordToggle() {
+    return (
+      <button
+        type="button"
+        onClick={handlePasswordToggle}
+        className={styles.passwordToggle}
+      >
+        {passwordVisible ? (
+          <IoMdEyeOff size={14.4} color="#121214" />
+        ) : (
+          <IoMdEye size={14.4} color="#121214" />
+        )}
+      </button>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <label htmlFor={fieldName}>{label}</label>
 
-      <input
-        type={type || "text"}
-        id={fieldName}
-        ref={inputRef}
-        defaultValue={defaultInputValue}
-        className={styles.input}
-        onFocus={() => {
-          clearError();
-          clearAuthError();
-        }}
-        {...rest}
-      />
+      {isPassword ? (
+        <div className={styles.passwordContainer}>
+          <input
+            type={type || "text"}
+            id={fieldName}
+            ref={inputRef}
+            defaultValue={defaultInputValue}
+            className={styles.inputPassword}
+            onFocus={() => {
+              clearError();
+              clearAuthError();
+            }}
+            {...rest}
+          />
+
+          <PasswordToggle />
+        </div>
+      ) : (
+        <input
+          type={type || "text"}
+          id={fieldName}
+          ref={inputRef}
+          defaultValue={defaultInputValue}
+          className={styles.input}
+          onFocus={() => {
+            clearError();
+            clearAuthError();
+          }}
+          autoCorrect="off"
+          autoCapitalize="none"
+          style={{
+            textTransform: "initial",
+          }}
+          {...rest}
+        />
+      )}
 
       {error && <span>{error}</span>}
     </div>
