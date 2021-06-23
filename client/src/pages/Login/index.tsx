@@ -2,7 +2,13 @@ import React, { useRef } from "react";
 import { SubmitHandler, FormHandles } from "@unform/core";
 import { Form } from "@unform/web";
 
-import Input from "../../components/Input";
+import { Input } from "../../components/Input";
+
+import leftBg from "../../assets/left-bg.png";
+import rightBg from "../../assets/right-bg.png";
+import welcome from "../../assets/welcome.png";
+
+import styles from "./styles.module.css";
 
 interface FormData {
   name: string;
@@ -18,16 +24,32 @@ export function Login() {
   }
 
   return (
-    <div>
-      <h1>Faça seu login aqui mulherada!</h1>
-      <h2>Toma aqui um girassol: 🌻</h2>
+    <div className={styles.container}>
+      <div className={styles.leftSide}>
+        <img src={leftBg} alt="Flower" />
+      </div>
 
-      <Form ref={formRef} onSubmit={handleSubmit}>
-        <Input label="email" name="email" />
-        <Input label="senha" name="password" />
+      <div className={styles.content}>
+        <img src={welcome} alt="Bem vindas" />
 
-        <button type="submit">entrar</button>
-      </Form>
+        <Form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
+          <Input name="email" type="email" placeholder="Digite o seu e-mail" />
+
+          <Input
+            name="password"
+            type="password"
+            placeholder="Digite a sua senha"
+          />
+
+          <button type="submit" className={styles.button}>
+            entrar
+          </button>
+        </Form>
+      </div>
+
+      <div className={styles.rightSide}>
+        <img src={rightBg} alt="Flower" />
+      </div>
     </div>
   );
 }
