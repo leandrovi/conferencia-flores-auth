@@ -14,13 +14,14 @@ interface IAttendee {
 export class LoginController {
   async login(request: Request, response: Response) {
     const { email, password }: Omit<IAttendee, "name"> = request.body;
+    const uppercasePassword = password.toUpperCase();
 
     console.info("🚀 Starting login for attendee:", email);
 
     const { Item: attendeeExists } = await new AWS.DynamoDB.DocumentClient()
       .get({
         TableName: process.env.ATTENDEES_TABLE,
-        Key: { email, password },
+        Key: { email, password: uppercasePassword },
       })
       .promise();
 
