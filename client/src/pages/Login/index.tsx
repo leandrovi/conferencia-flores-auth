@@ -13,6 +13,9 @@ import welcome from "../../assets/welcome.png";
 import spinner from "../../assets/spinner.gif";
 
 import styles from "./styles.module.css";
+import { sleep } from "../../utils/sleep";
+import { loadLoggedAttendee } from "../../services/storage";
+import { STREAMING_URL } from "../../contants";
 
 interface FormData {
   name: string;
@@ -28,9 +31,18 @@ export function Login() {
   const [submitLoading, setSubmitLoading] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    async function getLocalLoggedAttendee() {
+      const isLogged = loadLoggedAttendee();
+
+      if (isLogged) {
+        window.location.href = STREAMING_URL;
+      }
+
+      await sleep(1200);
       setLoading(false);
-    }, 2000);
+    }
+
+    getLocalLoggedAttendee();
   }, []);
 
   async function handleSubmit(
@@ -60,7 +72,7 @@ export function Login() {
       setTimeout(() => {
         setSubmitLoading(false);
       }, 1000);
-      // window.location.href = "https://adai.online.church/";
+      // window.location.href = STREAMING_URL;
     } catch (err) {
       const validationErrors: { [path: string]: string } = {};
 
