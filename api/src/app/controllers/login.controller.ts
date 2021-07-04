@@ -63,7 +63,7 @@ export class LoginController {
 
         const requestItems: AWS.DynamoDB.DocumentClient.BatchWriteItemRequestMap =
           {
-            [process.env.ATTENDEES_TABLE]: requests,
+            "flowers-attendees-prod": requests,
           };
 
         const params: AWS.DynamoDB.DocumentClient.BatchWriteItemInput = {
