@@ -3,6 +3,7 @@ import { SubmitHandler, FormHandles, FormHelpers } from "@unform/core";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCookies } from "react-cookie";
 
 import { Input } from "../../components/Input";
 import { AppLoader } from "../../components/Loader";
@@ -14,7 +15,7 @@ import spinner from "../../assets/spinner.gif";
 
 import styles from "./styles.module.css";
 import { sleep } from "../../utils/sleep";
-import { loadLoggedAttendee } from "../../services/storage";
+import { loadLoggedAttendee, saveLoggedAttendee } from "../../services/storage";
 import { STREAMING_URL } from "../../contants";
 import { api } from "../../services/api";
 
@@ -31,11 +32,19 @@ export function Login() {
   const [loading, setLoading] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
 
+  const [cookie, setCookie] = useCookies(["floresaccess"]);
+
   useEffect(() => {
     async function getLocalLoggedAttendee() {
       const isLogged = loadLoggedAttendee();
 
       if (isLogged) {
+        setCookie("floresaccess", true, {
+          path: "/",
+          maxAge: 108000,
+          sameSite: false,
+        });
+
         window.location.href = STREAMING_URL;
       }
 
@@ -44,7 +53,7 @@ export function Login() {
     }
 
     getLocalLoggedAttendee();
-  }, []);
+  }, [setCookie]);
 
   async function handleSubmit(
     data: SubmitHandler<FormData>,
@@ -74,9 +83,20 @@ export function Login() {
         throw new Error("Attendee does not exist");
       }
 
-      window.location.href = STREAMING_URL;
+      saveLoggedAttendee();
 
-      setSubmitLoading(false);
+      setCookie("floresaccess", true, {
+        path: "/",
+        maxAge: 108000,
+        domain: ".conferenciaflores.com.br",
+      });
+
+      console.log("Cookie set:", cookie);
+
+      setTimeout(() => {
+        window.location.href = STREAMING_URL;
+        setSubmitLoading(false);
+      }, 1300);
     } catch (err) {
       const validationErrors: { [path: string]: string } = {};
 
