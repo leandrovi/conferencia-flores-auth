@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as AWS from "aws-sdk";
 
-import attendees from "../../../attendees.json";
+import attendees from "../../../attendees_v3.json";
 
 AWS.config.update({ region: "us-east-1" });
 
@@ -13,28 +13,34 @@ interface IAttendee {
 
 export class LoginController {
   async login(request: Request, response: Response) {
-    const { email, password }: Omit<IAttendee, "name"> = request.body;
-    const uppercasePassword = password.toUpperCase();
+    try {
+      const { email, password }: Omit<IAttendee, "name"> = request.body;
+      const uppercasePassword = password.toUpperCase();
 
-    console.info("🚀 Starting login for attendee:", email);
+      console.info("🚀 Starting login for attendee:", email);
+      console.info("🔧 Password that is going to be used:", password);
 
-    const { Item: attendeeExists } = await new AWS.DynamoDB.DocumentClient()
-      .get({
-        TableName: process.env.ATTENDEES_TABLE,
-        Key: { email, password: uppercasePassword },
-      })
-      .promise();
+      const { Item: attendeeExists } = await new AWS.DynamoDB.DocumentClient()
+        .get({
+          TableName: process.env.ATTENDEES_TABLE,
+          Key: { email, password: uppercasePassword },
+        })
+        .promise();
 
-    if (!attendeeExists) {
-      return response.status(404).json({ error: "Attendee not found" });
+      if (!attendeeExists) {
+        console.log("❌ Attendee not found, aborting...");
+        return response.status(404).json({ error: "Attendee not found" });
+      }
+
+      const attendee = attendeeExists as IAttendee;
+
+      console.info("✅ Attendee successfully retrieved:", attendee);
+      console.info(`🚀 Generating access token for attendee ${attendee.name}`);
+
+      return response.status(200).json({ exists: true });
+    } catch (err) {
+      console.error("❌ Error retrieving attendee from the database:", err);
     }
-
-    const attendee = attendeeExists as IAttendee;
-
-    console.info("✅ Attendee successfully retrieved:", attendee);
-    console.info(`🚀 Generating access token for attendee ${attendee.name}`);
-
-    return response.status(200).json({ exists: true });
   }
 
   async seed(request: Request, response: Response) {
