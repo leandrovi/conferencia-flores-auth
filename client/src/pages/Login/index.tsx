@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 
-import { STREAMING_URL } from "../../contants";
 import { sleep } from "../../utils/sleep";
 import { api } from "../../services/api";
 import { loadLoggedAttendee, saveLoggedAttendee } from "../../services/storage";

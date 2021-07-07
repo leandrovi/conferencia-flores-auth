@@ -1,5 +1,4 @@
 import React from "react";
-import { Login } from "./pages/Login";
 import { CookiesProvider } from "react-cookie";
 
 import "./fonts/linowrite.ttf";

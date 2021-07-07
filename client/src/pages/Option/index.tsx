@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Redirect } from "react-router";
 
 import { MASTERCLASS_URL, STREAMING_URL } from "../../contants";
 
@@ -45,18 +44,21 @@ export function Option() {
         className={styles.container}
       >
         <div className={styles.left}>
-          <h1>Masterclass</h1>
           <img src={MasterclassImg} alt="Masterclass" />
           <a className={styles.buttonDisabled} href="#">
-            ACESSAR MASTERCLASS
+            ACESSAR
           </a>
+
+          <span>
+            As masterclasses serão disponibilizadas nos dias da conferência,
+            aguarde
+          </span>
         </div>
 
         <div className={styles.right}>
-          <h1>Ao Vivo</h1>
           <img src={StreamingImg} alt="Conferência ao vivo" />
           <a className={styles.button} href={STREAMING_URL}>
-            ACESSAR CONFERÊNCIA
+            ACESSAR
           </a>
         </div>
       </motion.div>
