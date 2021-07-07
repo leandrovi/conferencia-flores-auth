@@ -4,6 +4,12 @@ import { Form } from "@unform/web";
 import * as Yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCookies } from "react-cookie";
+import { useHistory } from "react-router-dom";
+
+import { STREAMING_URL } from "../../contants";
+import { sleep } from "../../utils/sleep";
+import { api } from "../../services/api";
+import { loadLoggedAttendee, saveLoggedAttendee } from "../../services/storage";
 
 import { Input } from "../../components/Input";
 import { AppLoader } from "../../components/Loader";
@@ -14,10 +20,6 @@ import welcome from "../../assets/welcome.png";
 import spinner from "../../assets/spinner.gif";
 
 import styles from "./styles.module.css";
-import { sleep } from "../../utils/sleep";
-import { loadLoggedAttendee, saveLoggedAttendee } from "../../services/storage";
-import { STREAMING_URL } from "../../contants";
-import { api } from "../../services/api";
 
 interface FormData {
   email: string;
@@ -26,6 +28,7 @@ interface FormData {
 
 export function Login() {
   const formRef = useRef<FormHandles>(null);
+  const history = useHistory();
 
   const [authError, setAuthError] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
@@ -42,10 +45,11 @@ export function Login() {
         setCookie("floresaccess", true, {
           path: "/",
           maxAge: 108000,
-          sameSite: false,
+          domain: ".conferenciaflores.com.br",
         });
 
-        window.location.href = STREAMING_URL;
+        // window.location.href = STREAMING_URL;
+        history.push("/escolher-trilha");
       }
 
       await sleep(1200);
@@ -53,7 +57,7 @@ export function Login() {
     }
 
     getLocalLoggedAttendee();
-  }, [setCookie]);
+  }, [setCookie, history]);
 
   async function handleSubmit(
     data: SubmitHandler<FormData>,
@@ -94,8 +98,9 @@ export function Login() {
       console.log("Cookie set:", cookie);
 
       setTimeout(() => {
-        window.location.href = STREAMING_URL;
+        // window.location.href = STREAMING_URL;
         setSubmitLoading(false);
+        history.push("/escolher-trilha");
       }, 1300);
     } catch (err) {
       const validationErrors: { [path: string]: string } = {};
