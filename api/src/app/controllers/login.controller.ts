@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as AWS from "aws-sdk";
 
-import attendees from "../../../attendees_v3.json";
+import attendees from "../../../attendees_v4.json";
 
 AWS.config.update({ region: "us-east-1" });
 
@@ -18,9 +18,11 @@ export class LoginController {
       const uppercasePassword = password.toUpperCase();
 
       console.info("🚀 Starting login for attendee:", email);
-      console.info("🔧 Password that is going to be used:", password);
+      console.info("🔧 Password that is going to be used:", uppercasePassword);
 
-      const { Item: attendeeExists } = await new AWS.DynamoDB.DocumentClient()
+      const dynamo = new AWS.DynamoDB.DocumentClient();
+
+      const { Item: attendeeExists } = await dynamo
         .get({
           TableName: process.env.ATTENDEES_TABLE,
           Key: { email, password: uppercasePassword },
@@ -77,6 +79,12 @@ export class LoginController {
         };
 
         const output = await dynamo.batchWrite(params).promise();
+
+        console.log(
+          `✅ Successfully processed the following attendees: ${JSON.stringify(
+            output.$response.data
+          )}`
+        );
 
         unprocessed.push(output.UnprocessedItems);
         errors.push(output.$response.error);

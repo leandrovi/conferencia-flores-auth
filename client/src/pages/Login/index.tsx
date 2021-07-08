@@ -38,16 +38,7 @@ export function Login() {
 
   useEffect(() => {
     async function getLocalLoggedAttendee() {
-      const isLogged = loadLoggedAttendee();
-
-      if (isLogged) {
-        setCookie("floresaccess", true, {
-          path: "/",
-          maxAge: 108000,
-          domain: ".conferenciaflores.com.br",
-        });
-
-        // window.location.href = STREAMING_URL;
+      if (cookie.floresaccess) {
         history.push("/escolher-trilha");
       }
 
@@ -56,7 +47,7 @@ export function Login() {
     }
 
     getLocalLoggedAttendee();
-  }, [setCookie, history]);
+  }, [cookie.floresaccess, history]);
 
   async function handleSubmit(
     data: SubmitHandler<FormData>,
