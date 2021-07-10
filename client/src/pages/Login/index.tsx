@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 
 import { sleep } from "../../utils/sleep";
 import { api } from "../../services/api";
-import { loadLoggedAttendee, saveLoggedAttendee } from "../../services/storage";
+import { saveLoggedAttendee } from "../../services/storage";
 
 import { Input } from "../../components/Input";
 import { AppLoader } from "../../components/Loader";
@@ -17,6 +17,7 @@ import leftBg from "../../assets/left-bg.png";
 import rightBg from "../../assets/right-bg.png";
 import welcome from "../../assets/welcome.png";
 import spinner from "../../assets/spinner.gif";
+import libras from "../../assets/libras.png";
 
 import styles from "./styles.module.css";
 
@@ -39,6 +40,7 @@ export function Login() {
   useEffect(() => {
     async function getLocalLoggedAttendee() {
       if (cookie.floresaccess) {
+        console.log("Cookie found:", cookie.floresaccess);
         history.push("/escolher-trilha");
       }
 
@@ -140,6 +142,14 @@ export function Login() {
         </div>
 
         <div className={styles.content}>
+          <div className={styles.tooltip}>
+            <span>
+              Acessivel <br /> em libras!
+            </span>
+
+            <img src={libras} alt="Libras" id="libras" />
+          </div>
+
           <img src={welcome} alt="Bem vindas" />
 
           <Form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
