@@ -53,6 +53,9 @@
 
 .tooltip {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tooltip span {
@@ -91,6 +94,14 @@
 @media (max-width: 1080px) {
   .content img {
     width: 80%;
+  }
+
+  .tooltip {
+    width: 30%;
+  }
+
+  .tooltip img {
+    width: 100%;
   }
 }
 
