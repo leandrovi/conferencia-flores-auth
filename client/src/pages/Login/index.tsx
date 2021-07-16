@@ -20,6 +20,7 @@ import spinner from "../../assets/spinner.gif";
 import libras from "../../assets/libras.png";
 
 import styles from "./styles.module.css";
+import { WPP } from "../../contants";
 
 interface FormData {
   email: string;
@@ -176,8 +177,12 @@ export function Login() {
 
             {errorCount >= 3 && (
               <span className={styles.error}>
-                Caso você esteja com dificuldades para acessar, envie um e-mail
-                para contato@adai.com.br para que possamos ajudá-la
+                Caso você esteja com dificuldades para fazer login, acesse nosso
+                suporte no WhatsApp clicando{" "}
+                <a href={WPP} target="_blank" rel="noreferrer">
+                  aqui
+                </a>
+                , para que possamos ajudá-la
               </span>
             )}
 

@@ -148,3 +148,8 @@
   margin-top: 0.45rem;
   color: var(--red-500);
 }
+
+.error a {
+  text-decoration: underline;
+  font-weight: bold;
+}

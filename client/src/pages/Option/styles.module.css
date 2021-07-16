@@ -1,59 +1,40 @@
 .container {
-  width: 100%;
   min-height: 100vh;
+  flex: 1;
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
-  position: relative;
+  flex-direction: column;
+  padding: 30px;
+  background-color: var(--white);
 }
 
-.container div {
+.option {
+  background: #e7e7e7;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #e7e7e7;
-  min-height: 100vh;
+  padding: 0px 30px 30px;
+  border-radius: 12px;
 }
 
-.container div h1 {
-  padding: 30px;
-  font-family: "LinoWrite";
-  font-weight: 400;
+.option + .option {
+  margin: 40px 0px 0px;
 }
 
-.container div img {
-  width: 80%;
-  max-width: 350px;
+.option img {
+  width: 75%;
 }
 
-@media (max-width: 1080px) {
-  .container {
-    flex-direction: column;
-  }
-}
-
-.left {
-  width: 50%;
-  height: 100%;
-  border-right: 1px solid #eee;
-  border-bottom: none;
-}
-
-.left span {
+.option span {
   font-size: 0.75rem;
   max-width: 300px;
   text-align: center;
-}
-
-.right {
-  flex: 1;
-  height: 100%;
+  margin-top: 20px;
 }
 
 .button {
-  margin: 20px auto 40px;
   padding: 12px 30px;
   border-radius: 8px;
   border: 1px solid var(--yellow-500);
@@ -73,8 +54,11 @@
   filter: brightness(0.95);
 }
 
+.button + .button {
+  margin-top: 10px;
+}
+
 .buttonDisabled {
-  margin: 20px auto 40px;
   padding: 12px 30px;
   border-radius: 8px;
   border: 1px solid var(--yellow-500);
@@ -92,24 +76,23 @@
   filter: brightness(0.75);
 }
 
-@media (max-width: 1080px) {
-  .container div {
-    min-height: 50vh;
+.buttonDisabled + .buttonDisabled {
+  margin-top: 10px;
+}
+
+@media (min-width: 1080px) {
+  .container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  .left {
-    width: 100%;
-    height: 50%;
-    border-right: none;
-    border-bottom: 1px solid #eee;
+  .option {
+    margin: 0px 15px 0px 0px;
+    min-height: 600px;
   }
 
-  .right {
-    flex: 1;
-    width: 100%;
-  }
-
-  .container div img {
-    width: 60%;
+  .option + .option {
+    margin: 0px 0px 0px 15px;
   }
 }

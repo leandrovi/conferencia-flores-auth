@@ -27,7 +27,7 @@ export function Option() {
         animate={loading ? "open" : "closed"}
         variants={{
           open: { opacity: 1 },
-          closed: { opacity: 0 },
+          closed: { opacity: 0, display: "none" },
         }}
         exit={{ display: "none" }}
       >
@@ -43,10 +43,15 @@ export function Option() {
         }}
         className={styles.container}
       >
-        <div className={styles.left}>
+        <div className={styles.option}>
           <img src={MasterclassImg} alt="Masterclass" />
+
           <a className={styles.buttonDisabled} href="#">
             ACESSAR
+          </a>
+
+          <a className={styles.buttonDisabled} href="#">
+            ACESSAR COM LIBRAS
           </a>
 
           <span>
@@ -55,8 +60,9 @@ export function Option() {
           </span>
         </div>
 
-        <div className={styles.right}>
+        <div className={styles.option}>
           <img src={StreamingImg} alt="Conferência ao vivo" />
+
           <a className={styles.button} href={STREAMING_URL}>
             ACESSAR
           </a>
