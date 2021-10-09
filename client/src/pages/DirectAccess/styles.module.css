@@ -1,0 +1,155 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.leftSide {
+  position: absolute;
+  height: 100%;
+  width: 10%;
+  min-width: 70px;
+  left: 0;
+}
+
+.rightSide {
+  position: absolute;
+  height: 100%;
+  width: 10%;
+  right: 0;
+  min-width: 70px;
+}
+
+.leftSide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+}
+
+.rightSide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 30px;
+}
+
+.content img {
+  width: 40rem;
+  margin: 0 0 40px;
+}
+
+.tooltip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip span {
+  position: absolute;
+  right: 100%;
+  top: 10%;
+  font-size: 0.75rem;
+  font-family: "LinoWrite";
+  color: rgba(75, 75, 75, 0.8);
+
+  min-width: 6rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px 0px 6px 6px;
+  margin-right: 5px;
+
+  background: var(--gray-100);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip:hover,
+.tooltip:active {
+  cursor: pointer;
+}
+
+.tooltip:hover span,
+.tooltip:active span {
+  opacity: 1;
+}
+
+.tooltip img {
+  width: 5rem;
+  margin: 0 0 30px;
+}
+
+@media (max-width: 1080px) {
+  .content img {
+    width: 80%;
+  }
+
+  .tooltip {
+    width: 30%;
+  }
+
+  .tooltip img {
+    width: 100%;
+  }
+}
+
+.form {
+  width: 90%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  width: 150px;
+  height: 40px;
+  margin: 20px auto 40px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--yellow-500);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background-color: var(--yellow-500);
+  transition: filter 0.2s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  filter: brightness(0.95);
+}
+
+.button img {
+  width: 1rem;
+  margin: 0;
+}
+
+.error {
+  font-size: 0.8rem;
+  letter-spacing: -0.01rem;
+  display: inline-block;
+  margin-top: 0.45rem;
+  color: var(--red-500);
+}
+
+.error a {
+  text-decoration: underline;
+  font-weight: bold;
+}

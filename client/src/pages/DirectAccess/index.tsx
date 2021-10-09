@@ -23,11 +23,11 @@ import styles from "./styles.module.css";
 import { WPP } from "../../contants";
 
 interface FormData {
-  email: string;
+  name: string;
   password: string;
 }
 
-export function Login() {
+export function DirectAccess() {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
 
@@ -62,10 +62,7 @@ export function Login() {
 
     try {
       const schema = Yup.object().shape({
-        email: Yup.string()
-          .email("O e-mail precisa ser um e-mail válido")
-          .matches(/soluzioni@live.com/g, "A conferência não está mais disponível, nos vemos ano que vem!")
-          .required("Por favor, digite um e-mail válido"),
+        email: Yup.string().required("Por favor, digite o nome"),
         password: Yup.string()
           .min(6, "A senha deve conter 6 dígitos")
           .required("Por favor, digite a senha enviada por e-mail"),
@@ -74,12 +71,6 @@ export function Login() {
       await schema.validate(data, {
         abortEarly: false,
       });
-      
-      const { email } = data as unknown as FormData;
-
-      if (email !==  "soluzioni@live.com") {
-        throw new Error("Attendee does not exist");
-      }
 
       const response = await api.post<{ exists: boolean }>("/login", data);
 
@@ -164,7 +155,7 @@ export function Login() {
             <Input
               name="email"
               type="text"
-              placeholder="Digite o seu e-mail"
+              placeholder="Digite o apelido"
               clearAuthError={() => setAuthError(false)}
             />
 
@@ -178,7 +169,7 @@ export function Login() {
 
             {authError && (
               <span className={styles.error}>
-                Seu e-mail e/ou senha estão incorretos, tente novamente
+                Seu apelido e/ou senha estão incorretos, tente novamente
               </span>
             )}
 

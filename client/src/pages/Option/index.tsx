@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { MASTERCLASS_URL, STREAMING_URL } from "../../contants";
+import {
+  MASTERCLASS_URL,
+  MASTERCLASS_URL_ACCESSIBLE,
+  STREAMING_ON_DEMAND,
+  STREAMING_URL,
+} from "../../contants";
 
 import { AppLoader } from "../../components/Loader";
 
@@ -46,25 +51,20 @@ export function Option() {
         <div className={styles.option}>
           <img src={MasterclassImg} alt="Masterclass" />
 
-          <a className={styles.buttonDisabled} href="#">
+          <a className={styles.button} href={MASTERCLASS_URL}>
             ACESSAR
           </a>
 
-          <a className={styles.buttonDisabled} href="#">
+          <a className={styles.button} href={MASTERCLASS_URL_ACCESSIBLE}>
             ACESSAR COM LIBRAS
           </a>
-
-          <span>
-            As masterclasses serão disponibilizadas nos dias da conferência,
-            aguarde
-          </span>
         </div>
 
         <div className={styles.option}>
           <img src={StreamingImg} alt="Conferência ao vivo" />
 
-          <a className={styles.button} href={STREAMING_URL}>
-            ACESSAR
+          <a className={styles.button} href={STREAMING_ON_DEMAND}>
+            ASSISTIR CONFERÊNCIA
           </a>
         </div>
       </motion.div>
